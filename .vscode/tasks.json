@@ -17,7 +17,7 @@
                 "-Wextra",
                 "-O2",
                 "'-Wl,--stack=512000000'",
-                "-IE:/Code/libs/testlib/",
+                "-IF:/Code/libs/testlib/",
                 "-DLOCAL",
             ],
             "options": {
