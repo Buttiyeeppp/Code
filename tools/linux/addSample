@@ -1,0 +1,6 @@
+#!/bin/bash
+mkdir -p sample/$1
+touch sample/$1/$2.in
+touch sample/$1/$2.ans
+subl sample/$1/$2.in
+subl sample/$1/$2.ans
