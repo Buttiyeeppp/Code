@@ -14,20 +14,20 @@ void add(int u,int v,int w,int cost) {
     E[++tot]=Edge{v,w,head[u],cost};
     head[u]=tot;
 }
-int l[N],cur[N],vis[N];
+int dis[N],cur[N],vis[N];
 bool bfs() {
     memset(vis,0,sizeof(vis));
-    memset(l,INF,sizeof(l));
+    memset(dis,INF,sizeof(dis));
     memcpy(cur,head,sizeof(head));
     priority_queue<PII,vector<PII>,greater<PII>> q;
-    q.emplace(0,s), l[s]=0;
+    q.emplace(0,s), dis[s]=0;
     while(q.size()) {
         int u=q.top().second; q.pop();
         for(int i=head[u],to=E[i].to;i>1;i=E[i].nxt,to=E[i].to) {
-            if(l[to]>l[u]+E[i].cost&&E[i].w) l[to]=l[u]+E[i].cost, q.emplace(l[to],to);
+            if(dis[to]>dis[u]+E[i].cost&&E[i].w) dis[to]=dis[u]+E[i].cost, q.emplace(dis[to],to);
         }
     }
-    return (l[t]!=INF);
+    return (dis[t]!=INF);
 }
 int dfs(int x,int flow) {
     if(x==t||!flow) return flow; 
@@ -35,7 +35,7 @@ int dfs(int x,int flow) {
     int use=0;
     for(int i=cur[x],to=E[i].to;i>1;i=E[i].nxt,to=E[i].to) {
         cur[x]=i;
-        if(l[to]<l[x]+E[i].cost||!E[i].w||vis[to]) continue;
+        if(dis[to]<dis[x]+E[i].cost||!E[i].w||vis[to]) continue;
         int c=dfs(to,min(flow,E[i].w));
         if(!c) { vis[to]=1; continue; }
         flow-=c, use+=c, E[i].w-=c, E[i^1].w+=c;
@@ -50,7 +50,7 @@ int main() {
         add(u,v,w,cost), add(v,u,0,-cost);
     }
     int ans=0,cst=0,f;
-    while(bfs()) f=dfs(s,INT_MAX), ans+=f, cst+=l[t]*f;
+    while(bfs()) f=dfs(s,INT_MAX), ans+=f, cst+=dis[t]*f;
     printf("%d %d",ans,cst);
     return 0;
 }

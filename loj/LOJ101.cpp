@@ -13,28 +13,28 @@ void add(int u,int v,int w) {
     E[++tot]=Edge{v,w,head[u]};
     head[u]=tot;
 }
-int l[N],cur[N];
+int dis[N],cur[N];
 bool bfs() {
     queue<int> q;
-    memset(l,INF,sizeof(l));
+    memset(dis,INF,sizeof(dis));
     memcpy(cur,head,sizeof(head));
-    q.emplace(s), l[s]=0;
+    q.emplace(s), dis[s]=0;
     while(q.size()) {
         int u=q.front(); q.pop();
         for(int i=head[u],to=E[i].to;i>1;i=E[i].nxt,to=E[i].to) {
-            if(l[to]==INF&&E[i].w) l[to]=l[u]+1, q.emplace(to);
+            if(dis[to]==INF&&E[i].w) dis[to]=dis[u]+1, q.emplace(to);
         }
     }
-    return (l[t]!=INF);
+    return (dis[t]!=INF);
 }
 int dfs(int x,int flow) {
     if(x==t||!flow) return flow; 
     int use=0;
     for(int i=cur[x],to=E[i].to;i>1;i=E[i].nxt,to=E[i].to) {
         cur[x]=i;
-        if(l[to]!=l[x]+1||!E[i].w) continue;
+        if(dis[to]!=dis[x]+1||!E[i].w) continue;
         int c=dfs(to,min(flow,E[i].w));
-        if(!c) { l[to]=-1; continue; }
+        if(!c) { dis[to]=-1; continue; }
         flow-=c, use+=c, E[i].w-=c, E[i^1].w+=c;
     }
     return use;
