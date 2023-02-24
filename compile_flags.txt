@@ -2,7 +2,4 @@
 -std=c++17
 -Wall
 -Wextra
--O2
--Wl,--stack=512000000
--IF:/Code/libs/testlib/
 -DLOCAL
