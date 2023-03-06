@@ -71,7 +71,7 @@
                 "'${fileBasename}'",
                 "-o",
                 "'${fileBasenameNoExtension}.exe'",
-                "-std=c++20",
+                "-std=c++17",
                 "-glldb",
                 "-Wall",
                 "-Wextra",
