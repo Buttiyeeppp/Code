@@ -16,11 +16,12 @@ void solve() {
 	cin>>n;
 	for(int i=1;i<=4;i++)
 		for(int j=0;j<n;j++) cin>>a[i][j];
+	ull mn=1e16;
+	for(int i=0;i<n;i++) mn=min(mn,a[4][i]);
 	for(int i=0;i<n;i++) {
 		ull v=0;
-		for(int j=0,p=i;j<n;j++,p++) {
-			if(p==n) p=0;
-			v=v*P+a[4][p];
+		for(int j=0,p=i;j<n;j++,p=(p+1)%n) {
+			v=v*P+a[4][p]-mn;
 		}
 		mp[v]=1;
 	}
@@ -33,7 +34,8 @@ void solve() {
 		for(int i=0;i<n;i++) v=v*P+c[n-1]-c[i];
 		for(int i2=0;i2<n;i2++) {
 			if(i2) {
-//				v=v+c[i2-1]*(pow[])
+				v=(v-c[i2-1])*P+c[i2-1]*(1-pow[n-1])
+				
 			}
 		}
 	}
@@ -42,8 +44,6 @@ bool mem2;
 int main() {
 	ios::sync_with_stdio(false), cin.tie(0);
 	
-	cout<<((ull)-1)<<endl;
-	return 0;
 	int T; cin>>T;
 	while(T--) solve();
 	
