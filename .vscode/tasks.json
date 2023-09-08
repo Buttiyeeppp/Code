@@ -17,7 +17,7 @@
                 "-Wextra",
                 "-O2",
                 "'-Wl,--stack=512000000'",
-                "-DLOCAL",
+                "-Dxxzx",
             ],
             "options": {
                 "cwd": "${fileDirname}"
@@ -77,7 +77,7 @@
                 "-Wextra",
                 "-O2",
                 "'-Wl,--stack=512000000'",
-                "-D LOCAL"
+                "-Dxxzx"
             ],
             "options": {
                 "cwd": "${fileDirname}"
