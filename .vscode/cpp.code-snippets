@@ -49,9 +49,10 @@
             "temp-chkout"
         ],
         "body": [
-            "template<typename T> void chk_out(string op,T a[]) {",
-            "    cerr<<\"Out of \"<<op<<\" \";",
-            "    for(auto now:a) cerr<<now<<\" \";",
+            "template<typename T> void chk_out(string op,T a[],int l1=-1,int r1=-1) {",
+            "    cerr<<\"Out of \"<<op<<' ';",
+            "    if(~l1) for(int i=l1;i<=r1;i++) cerr<<a[i]<<' ';",
+            "    else for(auto now:a) cerr<<now<<' ';",
             "    cerr<<endl;",
             "}"
         ]
@@ -62,11 +63,12 @@
             "temp-vecout"
         ],
         "body": [
-            "template<typename T> void vec_out(string op,T a) {",
-            "    cerr<<\"Out of \"<<op<<\" \";",
-            "    for(auto now:a) cerr<<now<<\" \";",
+            "template<typename T> void vec_out(string op,T a,int l1=-1,int r1=-1) {",
+            "    cerr<<\"Out of \"<<op<<' ';",
+            "    if(~l1) for(int i=l1;i<=r1;i++) cerr<<a[i]<<' ';",
+            "    else for(auto now:a) cerr<<now<<' ';",
             "    cerr<<endl;",
-            "}",
+            "}"
         ]
     },
 }
