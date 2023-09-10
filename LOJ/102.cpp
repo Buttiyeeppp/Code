@@ -1,56 +1,72 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-typedef pair<int,int> PII;
-const int INF=0x3f3f3f3f;
+#define clo 1000.*clock()/CLOCKS_PER_SEC
+#ifndef xxzx
+#define endl '\n'
+#endif
+using ll=long long;
+using PII=pair<int,int>;
 const int N=4e2+10;
-const int M=2e4+10;
-int n,m,s,t;
-int head[N],tot=1;
+const int M=3e4+10;
+const int INF=0x3f3f3f3f;
+bool mem1;
+int n,m,s,t,head[N],tot=1;
 struct Edge {
-    int to,w,nxt,cost;
-}E[M<<1];
-void add(int u,int v,int w,int cost) {
-    E[++tot]=Edge{v,w,head[u],cost};
-    head[u]=tot;
+    int to,nxt,w,cost;
+}eg[M];
+void Add(int x,int y,int c,int w) {
+    eg[++tot]={y,head[x],c,w};
+    head[x]=tot;
 }
 int dis[N],cur[N],vis[N];
 bool bfs() {
+    memcpy(cur,head,sizeof(cur));
     memset(vis,0,sizeof(vis));
-    memset(dis,INF,sizeof(dis));
-    memcpy(cur,head,sizeof(head));
-    priority_queue<PII,vector<PII>,greater<PII>> q;
-    q.emplace(0,s), dis[s]=0;
+    memset(dis,0x3f,sizeof(dis)); dis[s]=0;
+    queue<int> q; q.push(s);
     while(q.size()) {
-        int u=q.top().second; q.pop();
-        for(int i=head[u],to=E[i].to;i>1;i=E[i].nxt,to=E[i].to) {
-            if(dis[to]>dis[u]+E[i].cost&&E[i].w) dis[to]=dis[u]+E[i].cost, q.emplace(dis[to],to);
+        int x=q.front(); q.pop();
+        vis[x]=0;
+        for(int i=head[x];i;i=eg[i].nxt) {
+            int y=eg[i].to;
+            if(dis[y]>dis[x]+eg[i].cost&&eg[i].w) {
+                dis[y]=dis[x]+eg[i].cost;
+                if(!vis[y]) q.push(y);
+            }
         }
     }
     return (dis[t]!=INF);
 }
 int dfs(int x,int flow) {
-    if(x==t||!flow) return flow; 
-    vis[x]=1;
-    int use=0;
-    for(int i=cur[x],to=E[i].to;i>1;i=E[i].nxt,to=E[i].to) {
+    if(x==t||!flow) return flow;
+    int use=0; vis[x]=1;
+    for(int i=cur[x];i&&flow;i=eg[i].nxt) {
         cur[x]=i;
-        if(dis[to]<dis[x]+E[i].cost||!E[i].w||vis[to]) continue;
-        int c=dfs(to,min(flow,E[i].w));
-        if(!c) { vis[to]=1; continue; }
-        flow-=c, use+=c, E[i].w-=c, E[i^1].w+=c;
+        int y=eg[i].to;
+        if(!eg[i].w||dis[y]!=dis[x]+eg[i].cost||vis[y]) continue;
+        int f=dfs(y,min(flow,eg[i].w));
+        if(!f) { vis[y]=1; continue; }
+        use+=f, flow-=f, eg[i].w-=f, eg[i^1].w+=f;
     }
     return use;
 }
+bool mem2;
 int main() {
-    scanf("%d%d",&n,&m);
+    ios::sync_with_stdio(false), cin.tie(nullptr);
+
+    cin>>n>>m;
     s=1,t=n;
-    for(int i=1,u,v,w,cost;i<=m;i++) {
-        scanf("%d%d%d%d",&u,&v,&w,&cost);
-        add(u,v,w,cost), add(v,u,0,-cost);
+    for(int i=1,x,y,c,w;i<=m;i++) {
+        cin>>x>>y>>c>>w;
+        Add(x,y,c,w), Add(y,x,0,-w);
     }
-    int ans=0,cst=0,f;
-    while(bfs()) f=dfs(s,INT_MAX), ans+=f, cst+=dis[t]*f;
-    printf("%d %d",ans,cst);
+    int f, ans=0, ans1=0;
+    while(bfs()) f=dfs(s,INF), ans+=f, ans1+=f*dis[t];
+    cout<<ans<<' '<<ans1<<endl;
+
+    #ifdef xxzx
+    cerr<<"Time: "<<clo<<"MS"<<endl;
+    cerr<<"Memory: "<<abs(&mem1-&mem2)/1024./1024.<<"MB"<<endl;
+    #endif
     return 0;
 }

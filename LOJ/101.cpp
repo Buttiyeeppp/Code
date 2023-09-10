@@ -1,52 +1,66 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-const int INF=0x3f3f3f3f;
+#define clo 1000.*clock()/CLOCKS_PER_SEC
+#ifndef xxzx
+#define endl '\n'
+#endif
+using ll=long long;
+using PII=pair<int,int>;
 const int N=1e2+10;
-const int M=5e3+10;
-int n,m,s,t;
-int head[N],tot=1;
+const int M=1e4+10;
+const int INF=0x3f3f3f3f;
+bool mem1;
+int n,m,s,t,head[N],tot=1;
 struct Edge {
-    int to,w,nxt;
-}E[M<<1];
-void add(int u,int v,int w) {
-    E[++tot]=Edge{v,w,head[u]};
-    head[u]=tot;
+    int to,nxt,w;
+}eg[M];
+void Add(int x,int y,int c) {
+    eg[++tot]={y,head[x],c};
+    head[x]=tot;
 }
 int dis[N],cur[N];
 bool bfs() {
-    queue<int> q;
-    memset(dis,INF,sizeof(dis));
-    memcpy(cur,head,sizeof(head));
-    q.emplace(s), dis[s]=0;
+    memcpy(cur,head,sizeof(cur));
+    memset(dis,0x3f,sizeof(dis)); dis[s]=0;
+    queue<int> q; q.push(s);
     while(q.size()) {
-        int u=q.front(); q.pop();
-        for(int i=head[u],to=E[i].to;i>1;i=E[i].nxt,to=E[i].to) {
-            if(dis[to]==INF&&E[i].w) dis[to]=dis[u]+1, q.emplace(to);
+        int x=q.front(); q.pop();
+        for(int i=head[x];i;i=eg[i].nxt) {
+            int y=eg[i].to;
+            if(dis[y]>dis[x]+1&&eg[i].w) dis[y]=dis[x]+1, q.push(y);
         }
     }
     return (dis[t]!=INF);
 }
 int dfs(int x,int flow) {
-    if(x==t||!flow) return flow; 
+    if(x==t||!flow) return flow;
     int use=0;
-    for(int i=cur[x],to=E[i].to;i>1;i=E[i].nxt,to=E[i].to) {
+    for(int i=cur[x];i&&flow;i=eg[i].nxt) {
         cur[x]=i;
-        if(dis[to]!=dis[x]+1||!E[i].w) continue;
-        int c=dfs(to,min(flow,E[i].w));
-        if(!c) { dis[to]=-1; continue; }
-        flow-=c, use+=c, E[i].w-=c, E[i^1].w+=c;
+        int y=eg[i].to;
+        if(!eg[i].w||dis[y]!=dis[x]+1) continue;
+        int f=dfs(y,min(flow,eg[i].w));
+        if(!f) { dis[y]=-1; continue; }
+        use+=f, flow-=f, eg[i].w-=f, eg[i^1].w+=f;
     }
     return use;
 }
+bool mem2;
 int main() {
-    scanf("%d%d%d%d",&n,&m,&s,&t);
-    for(int i=1,u,v,c;i<=m;i++) {
-        scanf("%d%d%d",&u,&v,&c);
-        add(u,v,c), add(v,u,0);
+    ios::sync_with_stdio(false), cin.tie(nullptr);
+
+    cin>>n>>m>>s>>t;
+    for(int i=1,x,y,c;i<=m;i++) {
+        cin>>x>>y>>c;
+        Add(x,y,c), Add(y,x,0);
     }
     ll ans=0;
-    while(bfs()) ans+=dfs(s,INT_MAX);
-    printf("%lld",ans);
+    while(bfs()) ans+=dfs(s,INF);
+    cout<<ans<<endl;
+
+    #ifdef xxzx
+    cerr<<"Time: "<<clo<<"MS"<<endl;
+    cerr<<"Memory: "<<abs(&mem1-&mem2)/1024./1024.<<"MB"<<endl;
+    #endif
     return 0;
 }
