@@ -1,56 +1,58 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 #define clo 1000.*clock()/CLOCKS_PER_SEC
 #ifndef xxzx
 #define endl '\n'
 #endif
 using ll=long long;
-using ull=unsigned long long;
 using PII=pair<int,int>;
 const int N=1e3+10;
-const ll P=1331;
+const ll P=131;
+const ll Mod=1e9+7;
 bool mem1;
-int n,a[5][N],c[N];
-map<ull,bool> mp;
+int n,cs;
+ll v[5],Pn,a[5][N];
+unordered_set<ll> mp;
+void calc(int op,int i) {
+    v[op]=((v[op]-Pn*a[op][i]%Mod+Mod)%Mod*P+a[op][i])%Mod;
+}
 void solve() {
-	cin>>n;
-	for(int i=1;i<=4;i++)
-		for(int j=0;j<n;j++) cin>>a[i][j];
-	ull mn=1e16;
-	for(int i=0;i<n;i++) mn=min(mn,a[4][i]);
-	for(int i=0;i<n;i++) {
-		ull v=0;
-		for(int j=0,p=i;j<n;j++,p=(p+1)%n) {
-			v=v*P+a[4][p]-mn;
-		}
-		mp[v]=1;
-	}
-	for(int i1=0;i1<n;i1++) {
-		for(int p1=0,p2=i1;p1<n;p1++,p2++) {
-			if(p2==n) p2=0;
-			c[p1]=a[1][p1]+a[2][p2]+a[3][p1];
-		}
-		ull v=0;
-		for(int i=0;i<n;i++) v=v*P+c[n-1]-c[i];
-		for(int i2=0;i2<n;i2++) {
-			if(i2) {
-				v=(v-c[i2-1])*P+c[i2-1]*(1-pow[n-1])
-				
-			}
-		}
-	}
+    cin>>n;
+    ll sum=0;
+    for(int i=1;i<=4;i++)
+        for(int j=1;j<=n;j++) cin>>a[i][j], sum+=a[i][j];
+    if(sum%n) return cout<<"Case "<<++cs<<": No"<<endl, void();
+    sum/=n;
+    memset(v,0,sizeof(v));
+    for(int op=1;op<=4;op++)
+        for(int i=1;i<=n;i++) v[op]=(v[op]*P+a[op][i])%Mod;
+    ll m2=v[2],res=0; Pn=1;
+    for(int i=1;i<=n;i++) {
+        res=(res*P+sum)%Mod;
+        if(i<n) Pn=Pn*P%Mod;
+    }
+    mp.clear();
+    for(int i=1;i<=n;i++) mp.insert((v[3]+v[4])%Mod), calc(3,i);
+    for(int i=1;i<=n;i++) {
+        v[2]=m2;
+        for(int j=1;j<=n;j++) {
+            if(mp.count((res-(v[1]+v[2])%Mod+Mod)%Mod)) return cout<<"Case "<<++cs<<": Yes"<<endl, void();
+            calc(2,j);
+        }
+        calc(1,i);
+    }
+    cout<<"Case "<<++cs<<": No"<<endl;
 }
 bool mem2;
 int main() {
-	ios::sync_with_stdio(false), cin.tie(0);
-	
-	int T; cin>>T;
-	while(T--) solve();
-	
-	#ifdef xxzx
-	cerr<<"Time: "<<clo<<"Ms"<<endl;
-	cerr<<"Memory: "<<abs(&mem1-&mem2)/1024./1024.<<"MB"<<endl;
-	#endif
-	return 0;
-}
+    ios::sync_with_stdio(false), cin.tie(nullptr);
 
+    int T; cin>>T;
+    while(T--) solve();
+
+    #ifdef xxzx
+    cerr<<"Time: "<<clo<<"MS"<<endl;
+    cerr<<"Memory: "<<abs(&mem1-&mem2)/1024./1024.<<"MB"<<endl;
+    #endif
+    return 0;
+}
