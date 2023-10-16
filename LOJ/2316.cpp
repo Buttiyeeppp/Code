@@ -35,8 +35,16 @@ void solve() {
     for(int i=1;i<=n;i++) zg[i].clear(), g[i].clear(), ng[i].clear(), ind[i]=0;
     for(int i=1,x,y,z;i<=m;i++) {
         cin>>x>>y>>z;
-        if(!z) zg[x].push_back(y), ind[y]++;
         g[x].emplace_back(y,z), ng[y].emplace_back(x,z);
+    }
+    dij(1,0,g), dij(n,1,ng);
+    for(int i=1;i<=n;i++) {
+        if(dis[0][i]+dis[1][i]>dis[0][n]+k) continue;
+        for(auto to:g[i]) if(!to.second) {
+            int j=to.first;
+            if(dis[0][j]+dis[1][j]>dis[0][n]+k) continue;
+            zg[i].push_back(j), ind[j]++;
+        }
     }
     queue<int> q;
     for(int i=1;i<=n;i++) 
@@ -51,9 +59,8 @@ void solve() {
             if(!ind[y]) q.push(y);
         }
     }
-    dij(1,0,g), dij(n,1,ng);
     for(int i=1;i<=n;i++) if(ind[i]) {
-        if(dis[0][i]+dis[1][i]<=dis[0][n]+k) return cout<<-1<<endl, void();
+        return cout<<-1<<endl, void();
     }
     vector<int> nd;
     for(int i=1;i<=n;i++) if(!ind[i]) nd.push_back(i);
