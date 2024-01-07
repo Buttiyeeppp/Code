@@ -16,6 +16,8 @@
         "usernamehw.errorlens",
         "vadimcn.vscode-lldb",
         "yzhang.markdown-all-in-one",
-        "zh9528.file-size"
+        "zh9528.file-size",
+        "equinusocio.vsc-material-theme",
+        "WakaTime.vscode-wakatime"
     ]
 }
