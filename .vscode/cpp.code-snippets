@@ -83,4 +83,14 @@
             "}"
         ]
     },
+    "Freopen": {
+        "scope": "cpp",
+        "prefix": [
+            "temp-freopen"
+        ],
+        "body": [
+            "// freopen(\".in\",\"r\",stdin);",
+            "// freopen(\".out\",\"w\",stdout);"
+        ]
+    },
 }
