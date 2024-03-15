@@ -38,7 +38,7 @@
   "resmon.updatefrequencyms": 500,
   "task.quickOpen.skip": false,
   "terminal.integrated.enableMultiLinePasteWarning": false,
-  "workbench.colorTheme": "Material Theme Lighter High Contrast",
+  "workbench.colorTheme": "Material Theme Lighter",
   "workbench.iconTheme": "eq-material-theme-icons-light",
   "workbench.list.smoothScrolling": true,
   "workbench.settings.openDefaultKeybindings": false,
