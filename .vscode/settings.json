@@ -1,7 +1,7 @@
 {
   "clangd.arguments": [
     "--clang-tidy",
-    "-std=c++17",
+    // "-std=c++17",
   ],
   "doxdocgen.file.versionTag": "",
   "doxdocgen.generic.authorEmail": "19243240@qq.com",
