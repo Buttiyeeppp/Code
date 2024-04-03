@@ -10,7 +10,7 @@ const int N=3e3+10;
 const ll Mod=1e9+7;
 bool mem1;
 int n,q,a[N],x[N],y[N];
-ll f[N][N],g[N][N];
+ll g[N][N],g[N][N];
 ll Pow(ll x,ll y) {
     ll res=1;
     while(y) {
@@ -27,19 +27,19 @@ int main() {
     for(int i=1;i<=n;i++) cin>>a[i];
     for(int i=1;i<=q;i++) cin>>x[i]>>y[i];
     for(int i=1;i<=n;i++)
-        for(int j=1;j<=n;j++) if(a[i]>a[j]) f[i][j]=1;
+        for(int j=1;j<=n;j++) if(a[i]>a[j]) g[i][j]=1;
     ll inv=Pow(2,Mod-2);
     for(int i=1;i<=q;i++) {
         for(int j=1;j<=n;j++) {
-            g[x[i]][j]=(f[y[i]][j]+f[x[i]][j])*inv%Mod;
-            g[j][x[i]]=(f[j][y[i]]+f[j][x[i]])*inv%Mod;
-            g[y[i]][j]=(f[x[i]][j]+f[y[i]][j])*inv%Mod;
-            g[j][y[i]]=(f[j][x[i]]+f[j][y[i]])*inv%Mod;
+            g[x[i]][j]=(g[y[i]][j]+g[x[i]][j])*inv%Mod;
+            g[j][x[i]]=(g[j][y[i]]+g[j][x[i]])*inv%Mod;
+            g[y[i]][j]=(g[x[i]][j]+g[y[i]][j])*inv%Mod;
+            g[j][y[i]]=(g[j][x[i]]+g[j][y[i]])*inv%Mod;
         }
-        g[x[i]][y[i]]=g[y[i]][x[i]]=(f[x[i]][y[i]]+f[y[i]][x[i]])*inv%Mod;
+        g[x[i]][y[i]]=g[y[i]][x[i]]=(g[x[i]][y[i]]+g[y[i]][x[i]])*inv%Mod;
         for(int j=1;j<=n;j++) {
-            f[x[i]][j]=g[x[i]][j], f[j][x[i]]=g[j][x[i]];
-            f[y[i]][j]=g[y[i]][j], f[j][y[i]]=g[j][y[i]];
+            g[x[i]][j]=g[x[i]][j], g[j][x[i]]=g[j][x[i]];
+            g[y[i]][j]=g[y[i]][j], g[j][y[i]]=g[j][y[i]];
         }
         for(int j=1;j<=n;j++) {
             g[x[i]][j]=g[j][x[i]]=g[y[i]][j]=g[j][y[i]]=0;
@@ -47,7 +47,7 @@ int main() {
     }
     ll ans=0;
     for(int i=1;i<=n;i++)
-        for(int j=i+1;j<=n;j++) ans=(ans+f[i][j])%Mod;
+        for(int j=i+1;j<=n;j++) ans=(ans+g[i][j])%Mod;
     cout<<ans*Pow(2,q)%Mod<<endl;
 
     #ifdef xxzx
