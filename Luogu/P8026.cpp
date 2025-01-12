@@ -9,7 +9,7 @@ int d,n,m,fa[M][N],sz[M][N];
 vector<int> node[M][N];
 ull z[N],mul[M];
 struct HashTable {
-    int head[Mod],nxt[Mod],cnt[Mod];
+    int head[Mod],nxt[Mod],cnt[Mod],tot;
     ull v[Mod];
     HashTable() {for(int i=0;i<Mod;i++) head[i]=nxt[i]=v[i]=-1, cnt[i]=0;}
     int Modify(ull val,int op) {
@@ -23,8 +23,9 @@ struct HashTable {
             }
             return cnt[p];
         }
-        if(~l) p=(l+1)%Mod; else p=val%Mod;
-        while(~v[p]) p=(p+1)%Mod;
+        p=++tot;
+        // if(~l) p=(l+1)%Mod; else p=val%Mod;
+        // while(~v[p]) p=(p+1)%Mod;
         if(~l) nxt[l]=p; else head[val%Mod]=p;
         cnt[p]+=op, v[p]=val;
         return cnt[p];
